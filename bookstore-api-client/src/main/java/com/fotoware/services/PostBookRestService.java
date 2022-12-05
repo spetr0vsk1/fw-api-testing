@@ -1,6 +1,7 @@
 package com.fotoware.services;
 
 import com.fotoware.models.BookDTO;
+import com.fotoware.utils.ConfigurationConstants;
 import com.fotoware.utils.ConfigurationManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -8,7 +9,7 @@ import io.restassured.response.Response;
 public class PostBookRestService {
 
     public PostBookRestService() {
-        RestAssured.baseURI = ConfigurationManager.readFromProperties("baseURI");
+        RestAssured.baseURI = ConfigurationManager.readFromProperties(ConfigurationConstants.BASE_URI_PROPERTY);
     }
 
     /**

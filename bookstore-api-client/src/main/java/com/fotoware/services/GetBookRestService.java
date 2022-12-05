@@ -1,10 +1,13 @@
 package com.fotoware.services;
 
+import com.fotoware.utils.ConfigurationConstants;
 import com.fotoware.utils.ConfigurationManager;
+import com.fotoware.utils.Logger;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.awaitility.Awaitility;
+import org.awaitility.core.ConditionTimeoutException;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +16,7 @@ public class GetBookRestService {
 
 
     public GetBookRestService() {
-        RestAssured.baseURI = ConfigurationManager.readFromProperties("baseURI");
+        RestAssured.baseURI = ConfigurationManager.readFromProperties(ConfigurationConstants.BASE_URI_PROPERTY);
     }
 
 
@@ -23,11 +26,16 @@ public class GetBookRestService {
      * The search finishes once the book is found, or if the time allocated for searching passes.
      */
     public Response getBookByISBN(Integer isbn) {
-        Awaitility.await()
-                .ignoreExceptions()
-                .atMost(10, TimeUnit.SECONDS)
-                .pollInterval(1, TimeUnit.SECONDS)
-                .until(bookExists(isbn));
+        try {
+            Awaitility.await()
+                    .ignoreExceptions()
+                    .atMost(ConfigurationConstants.MAX_RESPONSE_RETRY_PERIOD, TimeUnit.SECONDS)
+                    .pollInterval(ConfigurationConstants.RESPONSE_RETRY_INTERVAL, TimeUnit.SECONDS)
+                    .until(bookExists(isbn));
+        } catch (ConditionTimeoutException e) {
+            Logger.log.error("Requested book was not found in the library!");
+        }
+
         return RestAssured.get(isbn.toString())
                 .thenReturn();
     }

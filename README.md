@@ -6,6 +6,7 @@ Preconditions:
 1. Have java installed and the JAVA_HOME property set. (latest version is 19, but anything above 11 should work)
     - Useful link: https://www.oracle.com/java/technologies/downloads/
     - Useful link: https://confluence.atlassian.com/doc/setting-the-java_home-variable-in-windows-8895.html
+    - Useful link: https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux
 2. Have maven installed(latest version) and the MAVEN_HOME property set.
     - Useful link: https://www.baeldung.com/install-maven-on-windows-linux-mac
 3. Have IntelliJ IDEA or any other IDE that supports Java and Maven installed.
