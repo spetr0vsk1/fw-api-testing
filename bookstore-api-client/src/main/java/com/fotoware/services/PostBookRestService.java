@@ -1,0 +1,20 @@
+package com.fotoware.services;
+
+import com.fotoware.models.BookDTO;
+import com.fotoware.utils.ConfigurationManager;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+
+public class PostBookRestService {
+
+    public PostBookRestService() {
+        RestAssured.baseURI = ConfigurationManager.readFromProperties("baseURI");
+    }
+
+    /**
+     * Adds new book to the library
+     */
+    public Response postNewBook(BookDTO book) {
+        return RestAssured.given().header("Content-Type", "application/json").body(book).when().post();
+    }
+}
